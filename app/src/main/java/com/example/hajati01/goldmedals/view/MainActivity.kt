@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
-
-
 class MainActivity : AppCompatActivity() {
 
     @Inject
@@ -23,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         AndroidInjection.inject(this)
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,4 +54,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    //test1
 }
