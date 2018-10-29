@@ -18,7 +18,7 @@ Notes:
 Todo:
 
 1. add Dagger DI
-2. add header to recyclerview
+2. add header to recyclerview and general improvement to the UI ( increase font size, use percent-guideline for liquid dimensions)
 3. Fix broken test and add complete full range of tests
 4. It currently displays the countries flag , as the American flag, by default, so, it needs to change so that 
 user can select a flag
