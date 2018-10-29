@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">GoldMedals</string>
     <string name="action_settings">Settings</string>
+    <string name="edit_country_title">Edit Country</string>
+    <string name="add_country_title">Add Country</string>
+    <string name="error_save_country">Error with saving Country</string>
+    <string name="save_country">Country saved</string>
+    <string name="error_update_country">Error with updating Country</string>
+    <string name="update_country">Country updated</string>
+    <string name="error_delete_country">Error with deleting Country</string>
+    <string name="delete_country">Country deleted</string>
+    <string name="no_of_golds">No of Golds:</string>
+    <string name="enter_number">enter number</string>
+    <string name="enter_country">enter country</string>
+    <string name="country">Country :</string>
+    <string name="delete_all_countries">Delete All Countries</string>
 </resources>

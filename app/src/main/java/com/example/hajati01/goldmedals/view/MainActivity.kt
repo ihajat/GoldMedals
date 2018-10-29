@@ -1,60 +1,73 @@
 package com.example.hajati01.goldmedals.view
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
-import com.example.hajati01.goldmedals.model.MainViewModel
-import dagger.android.AndroidInjection
-
+import com.example.hajati01.goldmedals.model.CountryDb
+import com.example.hajati01.goldmedals.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import javax.inject.Inject
 
+class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickListener {
 
+    private var countryRecyclerView: RecyclerView? = null
+    private var recyclerViewAdapter: CountryRecyclerAdapter? = null
 
-class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var  mainViewModel: MainViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        AndroidInjection.inject(this)
-
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
-        if(mainViewModel != null){
-            testTextView.setText("PASSED = ${mainViewModel.test}")
-        }else{
-            testTextView.setText("FAILURE!");
-        }
-
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    private var db: CountryDb? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        db = CountryDb.getDataBase(this)
+
+        countryRecyclerView = findViewById(R.id.recycler_view)
+        recyclerViewAdapter = CountryRecyclerAdapter(arrayListOf(), this)
+
+        countryRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        countryRecyclerView!!.adapter = recyclerViewAdapter
+
+        viewModel.getListCountries().observe(this, Observer { countrys ->
+            recyclerViewAdapter!!.addCountries(countrys!!)
+        })
+        fab.setOnClickListener {
+            var intent = Intent(applicationContext, CountryDetailsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.delete_all_items -> {
+                deleteAllCountrys()
+            }
         }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteAllCountrys() {
+        db!!.daoCountry().deleteAllCountries()
+    }
+
+    override fun onItemClick(country: Country) {
+        var intent = Intent(applicationContext, CountryDetailsActivity::class.java)
+        intent.putExtra("idCountry", country.id)
+        startActivity(intent)
     }
 }
+
