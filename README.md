@@ -16,3 +16,9 @@ Notes:
 7. It uses Dagger 2, but, I have currently removed the implementation , since, there is a subtle bug
 8. It sorts in descending order of the number of gold medals
 
+Todo:
+
+1. add Dagger DI
+2. add header to recyclerview
+3. Fix broken test and add complete full range of tests
+
