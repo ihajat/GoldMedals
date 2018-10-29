@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.example.hajati01.goldmedals.Country
 
-
 @Dao
 interface CountryDao {
     @Query("select * from countries ORDER BY golds DESC")

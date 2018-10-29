@@ -8,12 +8,11 @@ import android.widget.TextView
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
 
-
 class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClickListener) : RecyclerView.Adapter<CountryRecyclerAdapter.RecyclerViewHolder>() {
 
     private var listCountries: List<Country> = countries
 
-    private var listenerContact: OnItemClickListener = listener
+    private val listenerContact: OnItemClickListener = listener
 
     interface OnItemClickListener {
         fun onItemClick(country: Country)
@@ -28,10 +27,10 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
-        var currentCountry: Country = listCountries[position]
+        val currentCountry: Country = listCountries[position]
 
-        var nameCountry = currentCountry.name
-        var numberCountry = currentCountry.golds
+        val nameCountry = currentCountry.name
+        val numberCountry = currentCountry.golds
 
         holder!!.mName.text = nameCountry
         holder.mNumber.text = numberCountry.toString()
@@ -45,10 +44,9 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
         notifyDataSetChanged()
     }
 
-
     class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var mName = itemView.findViewById<TextView>(R.id.name_country)!!
-        var mNumber = itemView.findViewById<TextView>(R.id.golds_country)!!
+        val mName = itemView.findViewById<TextView>(R.id.name_country)
+        val mNumber = itemView.findViewById<TextView>(R.id.golds_country)
 
         fun bind(country: Country, listener: OnItemClickListener) {
             itemView.setOnClickListener {

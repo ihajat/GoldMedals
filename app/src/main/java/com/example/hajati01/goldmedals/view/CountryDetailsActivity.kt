@@ -14,28 +14,36 @@ import com.example.hajati01.goldmedals.model.CountryDao
 import com.example.hajati01.goldmedals.model.CountryDb
 import kotlinx.android.synthetic.main.activity_country_details.*
 
-
 class CountryDetailsActivity : AppCompatActivity() {
 
-    private var countryDao: CountryDao? = null
-    private var viewModel: MainViewModel? = null
+    private val countryDao: CountryDao by lazy {
+        db.daoCountry()
+    }
 
-    private var currentCountry: Int? = null
-    private var country: Country? = null
+    private val db: CountryDb by lazy {
+        CountryDb.getDataBase(this)
+    }
+
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
+
+    private val currentCountry: Int by lazy {
+        intent.getIntExtra("idCountry", -1)
+    }
+
+    private val country: Country by lazy {
+        countryDao!!.getCountryById(currentCountry!!)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_country_details)
-        var db: CountryDb = CountryDb.getDataBase(this)
 
-        countryDao = db.daoCountry()
-
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        currentCountry = intent.getIntExtra("idCountry", -1)
         if (currentCountry != -1) {
             setTitle(R.string.edit_country_title)
-            country = countryDao!!.getCountryById(currentCountry!!)
-            name_edit_text.setText(country!!.name)
-            golds_edit_text.setText(country!!.golds.toString())
+            name_edit_text.setText(country.name)
+            golds_edit_text.setText(country.golds.toString())
         } else {
             setTitle(R.string.add_country_title)
             invalidateOptionsMenu()
@@ -43,7 +51,7 @@ class CountryDetailsActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        var inflater: MenuInflater = menuInflater
+        val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_items, menu)
         return true
     }
@@ -79,20 +87,20 @@ class CountryDetailsActivity : AppCompatActivity() {
     }
 
     private fun saveCountry() {
-        var nameCountry = name_edit_text.text.toString()
-        var numberCountry = golds_edit_text.text.toString().toInt()
-        var country = Country(0, nameCountry, numberCountry)
-        viewModel!!.addCountry(country)
+        val nameCountry = name_edit_text.text.toString()
+        val numberCountry = golds_edit_text.text.toString().toInt()
+        val country = Country(0, nameCountry, numberCountry)
+        viewModel.addCountry(country)
     }
 
     private fun deleteCountry() {
-        countryDao!!.deleteCountry(country!!)
+        countryDao!!.deleteCountry(country)
     }
 
     private fun updateCountry() {
-        var nameCountry = name_edit_text.text.toString()
-        var numberCountry = golds_edit_text.text.toString().toInt()
-        var country = Country(country!!.id, nameCountry, numberCountry)
-        countryDao!!.updateCountry(country)
+        val nameCountry = name_edit_text.text.toString()
+        val numberCountry = golds_edit_text.text.toString().toInt()
+        val country = Country(country!!.id, nameCountry, numberCountry)
+        countryDao.updateCountry(country)
     }
 }

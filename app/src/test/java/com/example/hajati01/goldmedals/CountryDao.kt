@@ -35,7 +35,6 @@ class CountryDaoTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        val context = InstrumentationRegistry.getTargetContext()
         database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), CountryDb::class.java!!)
                 .allowMainThreadQueries().build()
         dao = database!!.daoCountry()

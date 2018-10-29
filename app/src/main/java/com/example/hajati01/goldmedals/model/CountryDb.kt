@@ -6,14 +6,13 @@ import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.example.hajati01.goldmedals.Country
 
-
 @Database(entities = [(Country::class)], version = 2, exportSchema = false)
 abstract class CountryDb : RoomDatabase() {
     companion object {
         private var INSTANCE: CountryDb? = null
         fun getDataBase(context: Context): CountryDb {
             if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(context.applicationContext, CountryDb::class.java, "contacts-db")
+                INSTANCE = Room.databaseBuilder(context.applicationContext, CountryDb::class.java, "goldmedals-db")
                         .allowMainThreadQueries().build()
             }
             return INSTANCE as CountryDb

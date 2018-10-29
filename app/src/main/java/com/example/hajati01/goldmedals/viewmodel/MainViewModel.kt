@@ -7,10 +7,9 @@ import android.os.AsyncTask
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.model.CountryDb
 
-
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    var listCountry: LiveData<List<Country>>
+    val listCountry: LiveData<List<Country>>
     private val appDb: CountryDb
 
     init {
@@ -26,14 +25,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         addAsynTask(appDb).execute(country)
     }
 
-
     class addAsynTask(db: CountryDb) : AsyncTask<Country, Void, Void>() {
-        private var contactDb = db
+        private val contactDb = db
         override fun doInBackground(vararg params: Country): Void? {
             contactDb.daoCountry().insertCountry(params[0])
             return null
         }
-
     }
-
 }

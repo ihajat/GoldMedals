@@ -17,31 +17,33 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickListener {
 
-    private var countryRecyclerView: RecyclerView? = null
-    private var recyclerViewAdapter: CountryRecyclerAdapter? = null
+    private val countryRecyclerView: RecyclerView by lazy {
+        findViewById(R.id.recycler_view) as RecyclerView
+    }
+    private val recyclerViewAdapter: CountryRecyclerAdapter by lazy {
+        CountryRecyclerAdapter(arrayListOf(), this)
+    }
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
-    private var db: CountryDb? = null
+    private val db: CountryDb by lazy {
+        CountryDb.getDataBase(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        db = CountryDb.getDataBase(this)
 
-        countryRecyclerView = findViewById(R.id.recycler_view)
-        recyclerViewAdapter = CountryRecyclerAdapter(arrayListOf(), this)
-
-        countryRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        countryRecyclerView!!.adapter = recyclerViewAdapter
+        countryRecyclerView.layoutManager = LinearLayoutManager(this)
+        countryRecyclerView.adapter = recyclerViewAdapter
 
         viewModel.getListCountries().observe(this, Observer { countrys ->
-            recyclerViewAdapter!!.addCountries(countrys!!)
+            recyclerViewAdapter.addCountries(countrys!!)
         })
         fab.setOnClickListener {
-            var intent = Intent(applicationContext, CountryDetailsActivity::class.java)
+            val intent = Intent(applicationContext, CountryDetailsActivity::class.java)
             startActivity(intent)
         }
     }
@@ -61,11 +63,11 @@ class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickList
     }
 
     private fun deleteAllCountrys() {
-        db!!.daoCountry().deleteAllCountries()
+        db.daoCountry().deleteAllCountries()
     }
 
     override fun onItemClick(country: Country) {
-        var intent = Intent(applicationContext, CountryDetailsActivity::class.java)
+        val intent = Intent(applicationContext, CountryDetailsActivity::class.java)
         intent.putExtra("idCountry", country.id)
         startActivity(intent)
     }
