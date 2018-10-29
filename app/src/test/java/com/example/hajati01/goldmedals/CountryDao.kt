@@ -47,6 +47,11 @@ class CountryDaoTest {
         database!!.close()
     }
 
+    /*
+
+    Test to check that the insert country functionality works
+
+    */
     @Test
     @Throws(Exception::class)
     fun insert() {
@@ -60,6 +65,52 @@ class CountryDaoTest {
 
         // when
         dao!!.insertCountry(country)
+
+        // then
+        verify(observer)!!.onChanged(Collections.singletonList(country))
+    }
+
+    /*
+
+    TODO - Test to check that the update country functionality works
+
+    */
+    @Test
+    @Throws(Exception::class)
+    fun update() {
+
+        // given
+        val country = Country()
+        country.name = "UK"
+        country.golds = 3
+
+        observer?.let { dao!!.getAllCountries().observeForever(it) }
+
+        // when
+        dao!!.updateCountry(country)
+
+        // then
+        verify(observer)!!.onChanged(Collections.singletonList(country))
+    }
+
+    /*
+
+       TODO -  Test to check that the delete country functionality works
+
+     */
+    @Test
+    @Throws(Exception::class)
+    fun delete() {
+
+        // given
+        val country = Country()
+        country.name = "UK"
+        country.golds = 3
+
+        observer?.let { dao!!.getAllCountries().observeForever(it) }
+
+        // when
+        dao!!.deleteCountry(country)
 
         // then
         verify(observer)!!.onChanged(Collections.singletonList(country))
