@@ -1,4 +1,4 @@
-package com.example.hajati01.goldmedals
+package com.example.hajati01.goldmedals.di
 
 import com.example.hajati01.goldmedals.viewmodel.MainViewModel
 import dagger.Component

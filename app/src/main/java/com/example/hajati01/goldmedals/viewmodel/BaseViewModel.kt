@@ -1,12 +1,12 @@
-package com.example.hajati01.goldmedals
+package com.example.hajati01.goldmedals.viewmodel
 
 import android.arch.lifecycle.ViewModel
-import com.example.hajati01.goldmedals.viewmodel.MainViewModel
+import com.example.hajati01.goldmedals.di.DaggerViewModelInjector
+import com.example.hajati01.goldmedals.di.ViewModelInjector
 
 
 abstract class BaseViewModel:ViewModel(){
-    private val injector: ViewModelInjector = DaggerViewModelInjector
-            .builder()
+    private val injector: ViewModelInjector = DaggerViewModelInjector.builder()
             .build()
 
     init {

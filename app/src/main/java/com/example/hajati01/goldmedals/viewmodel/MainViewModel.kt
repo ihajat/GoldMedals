@@ -1,7 +1,6 @@
 package com.example.hajati01.goldmedals.viewmodel
 
 import android.arch.lifecycle.LiveData
-import com.example.hajati01.goldmedals.BaseViewModel
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.model.CountryDao
 import kotlinx.coroutines.experimental.CommonPool
