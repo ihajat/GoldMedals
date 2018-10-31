@@ -13,28 +13,20 @@ import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
 import com.example.hajati01.goldmedals.model.CountryDb
 import com.example.hajati01.goldmedals.viewmodel.MainViewModel
+import com.example.hajati01.goldmedals.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickListener  {
 
-    private val countryRecyclerView: RecyclerView by lazy {
-        findViewById(R.id.recycler_view) as RecyclerView
-    }
-    private val recyclerViewAdapter: CountryRecyclerAdapter by lazy {
-        CountryRecyclerAdapter(arrayListOf(), this)
-    }
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
-
-    private val db: CountryDb by lazy {
-        CountryDb.getDataBase(this)
-    }
+    private lateinit var viewModel: MainViewModel
+    private val countryRecyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
+    private val recyclerViewAdapter: CountryRecyclerAdapter by lazy { CountryRecyclerAdapter(arrayListOf(), this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
 
         countryRecyclerView.layoutManager = LinearLayoutManager(this)
         countryRecyclerView.adapter = recyclerViewAdapter
@@ -56,14 +48,10 @@ class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickList
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.delete_all_items -> {
-                deleteAllCountrys()
+                viewModel.deleteAllCountries()
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun deleteAllCountrys() {
-        db.daoCountry().deleteAllCountries()
     }
 
     override fun onItemClick(country: Country) {

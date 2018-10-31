@@ -8,45 +8,49 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.hajati01.goldmedals.Country
-import com.example.hajati01.goldmedals.viewmodel.MainViewModel
 import com.example.hajati01.goldmedals.R
-import com.example.hajati01.goldmedals.model.CountryDao
-import com.example.hajati01.goldmedals.model.CountryDb
+import com.example.hajati01.goldmedals.viewmodel.MainViewModel
+import com.example.hajati01.goldmedals.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_country_details.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
 class CountryDetailsActivity : AppCompatActivity() {
 
-    private val countryDao: CountryDao by lazy {
-        db.daoCountry()
-    }
-
-    private val db: CountryDb by lazy {
-        CountryDb.getDataBase(this)
-    }
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
+    private lateinit var viewModel: MainViewModel
+    private lateinit var country: Country
 
     private val currentCountry: Int by lazy {
         intent.getIntExtra("idCountry", -1)
-    }
-
-    private val country: Country by lazy {
-        countryDao!!.getCountryById(currentCountry!!)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_country_details)
 
+        viewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(MainViewModel::class.java)
+
         if (currentCountry != -1) {
             setTitle(R.string.edit_country_title)
-            name_edit_text.setText(country.name)
-            golds_edit_text.setText(country.golds.toString())
+            getCountryById(currentCountry)
         } else {
             setTitle(R.string.add_country_title)
             invalidateOptionsMenu()
+        }
+    }
+
+    private fun getCountryById(currentCountry: Int)  {
+        launch(UI) {
+            val query = async(CommonPool) { // Async stuff
+                viewModel.getCountryById(currentCountry)
+            }
+
+            country= query.await()
+
+            name_edit_text.setText(country.name)
+            golds_edit_text.setText(country.golds.toString())
         }
     }
 
@@ -94,13 +98,13 @@ class CountryDetailsActivity : AppCompatActivity() {
     }
 
     private fun deleteCountry() {
-        countryDao!!.deleteCountry(country)
+        viewModel.deleteCountry(country)
     }
 
     private fun updateCountry() {
         val nameCountry = name_edit_text.text.toString()
         val numberCountry = golds_edit_text.text.toString().toInt()
-        val country = Country(country!!.id, nameCountry, numberCountry)
-        countryDao.updateCountry(country)
+        val country = Country(country.id, nameCountry, numberCountry)
+        viewModel.updateCountry(country)
     }
 }

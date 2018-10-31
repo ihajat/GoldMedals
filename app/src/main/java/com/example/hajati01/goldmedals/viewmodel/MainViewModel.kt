@@ -1,35 +1,57 @@
 package com.example.hajati01.goldmedals.viewmodel
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.os.AsyncTask
+import com.example.hajati01.goldmedals.BaseViewModel
 import com.example.hajati01.goldmedals.Country
-import com.example.hajati01.goldmedals.model.CountryDb
+import com.example.hajati01.goldmedals.model.CountryDao
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
+class MainViewModel( val countryDao: CountryDao): BaseViewModel() {
     val listCountry: LiveData<List<Country>>
-    private val appDb: CountryDb
 
     init {
-        appDb = CountryDb.getDataBase(this.getApplication())
-        listCountry = appDb.daoCountry().getAllCountries()
+        listCountry = countryDao.getAllCountries()
     }
 
     fun getListCountries(): LiveData<List<Country>> {
         return listCountry
     }
 
-    fun addCountry(country: Country) {
-        addAsynTask(appDb).execute(country)
+    fun deleteAllCountries() {
+        countryDao.deleteAllCountries()
     }
 
-    class addAsynTask(db: CountryDb) : AsyncTask<Country, Void, Void>() {
-        private val contactDb = db
-        override fun doInBackground(vararg params: Country): Void? {
-            contactDb.daoCountry().insertCountry(params[0])
-            return null
+    fun addCountry(country: Country) {
+        launch(UI) {
+            val query = async(CommonPool) { // Async stuff
+                countryDao.insertCountry(country)
+            }
+            query.await()
         }
+    }
+
+    fun deleteCountry(country: Country) {
+        launch(UI) {
+            val query = async(CommonPool) { // Async stuff
+                countryDao.deleteCountry(country)
+            }
+            query.await()
+        }
+    }
+
+    fun updateCountry(country: Country) {
+        launch(UI) {
+            val query = async(CommonPool) { // Async stuff
+                countryDao.updateCountry(country)
+            }
+            query.await()
+        }
+    }
+
+    fun getCountryById(currentCountry: Int): Country {
+        return countryDao.getCountryById(currentCountry)
     }
 }

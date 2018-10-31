@@ -27,15 +27,16 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder?, position: Int) {
-        val currentCountry: Country = listCountries[position]
 
+        val currentCountry: Country = listCountries[position]
         val nameCountry = currentCountry.name
         val numberCountry = currentCountry.golds
 
-        holder!!.mName.text = nameCountry
-        holder.mNumber.text = numberCountry.toString()
-
-        holder.bind(currentCountry, listenerContact)
+        holder?.apply{
+            mName.text = nameCountry
+            mNumber.text = numberCountry.toString()
+            bind(currentCountry, listenerContact)
+        }
 
     }
 

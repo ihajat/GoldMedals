@@ -13,7 +13,8 @@ abstract class CountryDb : RoomDatabase() {
         fun getDataBase(context: Context): CountryDb {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.applicationContext, CountryDb::class.java, "goldmedals-db")
-                        .allowMainThreadQueries().build()
+                       // .allowMainThreadQueries()
+                        .build()
             }
             return INSTANCE as CountryDb
         }
