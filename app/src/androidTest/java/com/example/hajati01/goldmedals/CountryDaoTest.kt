@@ -35,15 +35,21 @@ class CountryDaoTest {
     }
 
     /*
-    Test Insert functionality
+    Test 1:  Insert functionality
       */
     @Test
     fun should_Insert_Country_Item() {
+
+        // Given that we have a country in the data source
         val country = Country(1,"UK",2)
         countryDao?.let{
             it.insertCountry(country)
         }
+
+        //When we retrieve a country from the data source using the same Id
         val countryTest = countryDao?.getCountryById(country.id)
+
+        //Then they should be the same
         Assert.assertEquals(countryTest?.name, country.name)
     }
 
@@ -52,13 +58,18 @@ class CountryDaoTest {
       */
     @Test
     fun should_UpdateCountry_Item() {
+
+        // Given that we have a country in the data source
         val country = Country(2,"France",0)
         countryDao?.let{
             it.insertCountry(country)
 
+        //When we update the country
             country.golds = 2
             it.updateCountry(country)
         }
+
+        //Then the update should contain the updated gold medals value
         val countryTest = countryDao?.getCountryById(country.id)
         Assert.assertEquals(countryTest?.golds, 2)
     }
@@ -68,12 +79,17 @@ class CountryDaoTest {
       */
     @Test
     fun should_DeleteCountry_Item() {
+
+        // Given that we have a country in the data source
         val country = Country(2,"France",0)
         countryDao?.let{
             it.insertCountry(country)
 
+            //When we delete the country
             it.deleteCountry(country)
         }
+
+        //Then the data source should not contain the country with the deleted id
         val countryTest = countryDao?.getCountryById(country.id)
         Assert.assertEquals(countryTest, null)
     }
@@ -83,7 +99,11 @@ class CountryDaoTest {
      */
     @Test
     fun should_Flush_All_Data(){
+
+        // Given that we delete all cpountries in the data source
         countryDao?.deleteAllCountries()
+
+        //Then the data source should be empty
         val countryTest = getValue(countryDao?.getAllCountries()!!)
         Assert.assertEquals(countryTest.size, 0)
     }
