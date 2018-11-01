@@ -10,7 +10,7 @@ Notes:
 1. The architecture that I have used is MVVM.
 2. It is using the Android Architecture Components, with the ViewModel having lifecycle awareness.
 3. it is written in Kotlin
-4. It includes Mockito tests
+4. It includes Mockito tests , test coverage 100%
 5. It is using ROOM database.
 6. It uses Dagger 2
 7. It sorts in descending order of the number of gold medals
@@ -19,7 +19,6 @@ Notes:
 Todo:
 
 1. add header to recyclerview and general improvement to the UI ( increase font size, use percent-guideline for liquid dimensions)
-2. Fix broken test and add complete full range of tests
-3. It currently displays the countries flag , as the American flag, by default, so, it needs to change so that 
+2. It currently displays the countries flag , as the American flag, by default, so, it needs to change so that 
 user can select a flag
 
