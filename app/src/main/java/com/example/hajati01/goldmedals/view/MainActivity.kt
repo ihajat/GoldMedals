@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
-import com.example.hajati01.goldmedals.model.CountryDb
 import com.example.hajati01.goldmedals.viewmodel.MainViewModel
 import com.example.hajati01.goldmedals.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
