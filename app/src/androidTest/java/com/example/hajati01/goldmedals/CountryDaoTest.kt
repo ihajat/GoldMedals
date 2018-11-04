@@ -111,7 +111,7 @@ class CountryDaoTest {
 
 
     /*
-        LiveData is an asynchronous query, you get the LiveData object but it might contain no data.
+        LiveData is an asynchronous query.
         You use an extra method to wait for the data to be filled then extract the data.
      */
 

@@ -10,8 +10,15 @@
     <string name="error_delete_country">Error with deleting Country</string>
     <string name="delete_country">Country deleted</string>
     <string name="no_of_golds">No of Golds:</string>
+    <string name="no_of_silvers">No of Silvers:</string>
+    <string name="no_of_bronzes">No of Bronzes:</string>
     <string name="enter_number">enter number</string>
     <string name="enter_country">enter country</string>
     <string name="country">Country :</string>
     <string name="delete_all_countries">Delete All Countries</string>
+    <string name="headingCountry">COUNTRY</string>
+    <string name="headingGold">GOLD</string>
+    <string name="headingSilver">SILVER</string>
+    <string name="headingBronze">BRONZE</string>
+    <string name="error_bad_country_name_entered">The Country entered does not macth any of the predefined countries</string>
 </resources>

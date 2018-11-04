@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
+import com.example.hajati01.goldmedals.adapters.CountryRecyclerAdapter
 import com.example.hajati01.goldmedals.viewmodel.MainViewModel
 import com.example.hajati01.goldmedals.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity(), CountryRecyclerAdapter.OnItemClickList
 
     private lateinit var viewModel: MainViewModel
     private val countryRecyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) as RecyclerView }
-    private val recyclerViewAdapter: CountryRecyclerAdapter by lazy { CountryRecyclerAdapter(arrayListOf(), this) }
+    private val recyclerViewAdapter: CountryRecyclerAdapter by lazy { CountryRecyclerAdapter(arrayListOf(), this, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

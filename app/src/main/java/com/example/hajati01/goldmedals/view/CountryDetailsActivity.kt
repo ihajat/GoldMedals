@@ -17,6 +17,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 
+
 class CountryDetailsActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
@@ -48,9 +49,10 @@ class CountryDetailsActivity : AppCompatActivity() {
             }
 
             country= query.await()
-
             name_edit_text.setText(country.name)
             golds_edit_text.setText(country.golds.toString())
+            silvers_edit_text.setText(country.silvers.toString())
+            bronzes_edit_text.setText(country.bronzes.toString())
         }
     }
 
@@ -63,15 +65,23 @@ class CountryDetailsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.done_item -> {
-                if (currentCountry == -1) {
-                    saveCountry()
-                    Toast.makeText(this, getString(R.string.save_country), Toast.LENGTH_SHORT).show()
-                } else {
-                    updateCountry()
-                    Toast.makeText(this, getString(R.string.update_country), Toast.LENGTH_SHORT).show()
+                if(validateCountry()){
+                    if (currentCountry == -1) {
+                        saveCountry()
+                        Toast.makeText(this, getString(R.string.save_country), Toast.LENGTH_SHORT).show()
+                    } else {
+                        updateCountry()
+                        Toast.makeText(this, getString(R.string.update_country), Toast.LENGTH_SHORT).show()
+                    }
+
+                    finish()
+                }
+                else
+                {
+                    Toast.makeText(this, getString(R.string.error_bad_country_name_entered), Toast.LENGTH_SHORT).show()
+
                 }
 
-                finish()
             }
             R.id.delete_item -> {
                 deleteCountry()
@@ -80,6 +90,11 @@ class CountryDetailsActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun validateCountry(): Boolean {
+        val nameCountry = name_edit_text.text.toString()
+        return viewModel.validateCountry(nameCountry)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -92,8 +107,10 @@ class CountryDetailsActivity : AppCompatActivity() {
 
     private fun saveCountry() {
         val nameCountry = name_edit_text.text.toString()
-        val numberCountry = golds_edit_text.text.toString().toInt()
-        val country = Country(0, nameCountry, numberCountry)
+        val goldsCountry = getNumber(golds_edit_text.text.toString())
+        val silversCountry = getNumber(silvers_edit_text.text.toString())
+        val bronzesCountry = getNumber(bronzes_edit_text.text.toString())
+        val country = Country(0, nameCountry, goldsCountry, silversCountry, bronzesCountry)
         viewModel.addCountry(country)
     }
 
@@ -101,10 +118,21 @@ class CountryDetailsActivity : AppCompatActivity() {
         viewModel.deleteCountry(country)
     }
 
+    private fun getNumber( input: String): Int {
+        try {
+            return input.toInt()
+        } catch (e: NumberFormatException) {
+
+        }
+
+        return 0
+    }
     private fun updateCountry() {
         val nameCountry = name_edit_text.text.toString()
-        val numberCountry = golds_edit_text.text.toString().toInt()
-        val country = Country(country.id, nameCountry, numberCountry)
+        val goldsCountry = getNumber(golds_edit_text.text.toString())
+        val silversCountry = getNumber(silvers_edit_text.text.toString())
+        val bronzesCountry = getNumber(bronzes_edit_text.text.toString())
+        val country = Country(country.id, nameCountry, goldsCountry,silversCountry,bronzesCountry)
         viewModel.updateCountry(country)
     }
 }

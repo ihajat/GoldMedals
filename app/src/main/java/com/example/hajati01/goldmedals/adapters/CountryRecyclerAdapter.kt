@@ -1,16 +1,23 @@
-package com.example.hajati01.goldmedals.view
+package com.example.hajati01.goldmedals.adapters
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.ahmadrosid.svgloader.SvgLoader
 import com.example.hajati01.goldmedals.Country
 import com.example.hajati01.goldmedals.R
+import com.example.hajati01.goldmedals.utils.Constants
 
-class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClickListener) : RecyclerView.Adapter<CountryRecyclerAdapter.RecyclerViewHolder>() {
+
+class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClickListener, act: Activity) : RecyclerView.Adapter<CountryRecyclerAdapter.RecyclerViewHolder>() {
 
     private var listCountries: List<Country> = countries
+
+    private val activity: Activity = act
 
     private val listenerContact: OnItemClickListener = listener
 
@@ -19,6 +26,8 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerViewHolder {
+
+
         return RecyclerViewHolder(LayoutInflater.from(parent!!.context).inflate(R.layout.item_list, parent, false))
     }
 
@@ -30,11 +39,24 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
 
         val currentCountry: Country = listCountries[position]
         val nameCountry = currentCountry.name
-        val numberCountry = currentCountry.golds
+        val goldsCountry = currentCountry.golds
+        val silversCountry = currentCountry.silvers
+        val bronzesCountry = currentCountry.bronzes
+        val imageUrl = currentCountry.flag
 
         holder?.apply{
             mName.text = nameCountry
-            mNumber.text = numberCountry.toString()
+            mGolds.text = goldsCountry.toString()
+            mSilvers.text = silversCountry.toString()
+            mBronzes.text = bronzesCountry.toString()
+
+            if(!holder.mFlag.equals(Constants.file_not_found)) {
+                SvgLoader.pluck()
+                        .with(activity)
+                        .setPlaceHolder(R.mipmap.ic_launcher, R.mipmap.ic_launcher)
+                        .load(imageUrl, holder.mFlag)
+            }
+
             bind(currentCountry, listenerContact)
         }
 
@@ -47,7 +69,10 @@ class CountryRecyclerAdapter(countries: ArrayList<Country>, listener: OnItemClic
 
     class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mName = itemView.findViewById<TextView>(R.id.name_country)
-        val mNumber = itemView.findViewById<TextView>(R.id.golds_country)
+        val mGolds = itemView.findViewById<TextView>(R.id.golds_country)
+        val mSilvers = itemView.findViewById<TextView>(R.id.silvers_country)
+        val mBronzes = itemView.findViewById<TextView>(R.id.bronzes_country)
+        val mFlag = itemView.findViewById<ImageView>(R.id.country_flag_image_view)
 
         fun bind(country: Country, listener: OnItemClickListener) {
             itemView.setOnClickListener {

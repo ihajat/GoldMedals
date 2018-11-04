@@ -9,9 +9,9 @@ import com.example.hajati01.goldmedals.model.CountryDb
 class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            val db = CountryDb.getDataBase(activity.applicationContext)
+            val db = CountryDb.getInstance(activity.applicationContext)
             @Suppress("UNCHECKED_CAST")
-            return MainViewModel(db.daoCountry()) as T
+            return MainViewModel(db.daoCountry(),db.daoData()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

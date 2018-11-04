@@ -15,6 +15,14 @@ data class Country(
     var name: String = "",
 
     @ColumnInfo(name = "golds")
-    var golds: Int = 0
+    var golds: Int = 0,
 
+    @ColumnInfo(name = "silvers")
+    var silvers: Int = 0,
+
+    @ColumnInfo(name = "bronzes")
+    var bronzes: Int = 0,
+
+    @ColumnInfo(name = "flag")
+    var flag: String = ""
 )
