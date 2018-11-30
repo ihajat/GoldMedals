@@ -79,5 +79,7 @@ class MainViewModel( val countryDao: CountryDao,val dataDao: DataDao): BaseViewM
             query2!=null
     }
 
-    //thizs is a test7
+    //thizs is a test5
+    //add without new commit
+    //and this without new commit ( using android studio )
 }
